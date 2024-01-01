@@ -14,9 +14,9 @@ function App() {
       const res = await fetch(
         `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
       );
-      const data = res.json();
-      setData(data);
-      return data;
+      const jsonData = await res.json();
+      setData(jsonData);
+      return jsonData;
     } catch (err) {
       console.log(err);
       alert("failed to fetch data");
@@ -35,8 +35,9 @@ function App() {
     //   });
   };
 
-  const getCurrentData = (data) => {
-    const res = data.slice((currentPage - 1) * 10, currentPage * 10);
+  const getCurrentData = (item) => {
+    // console.log(item)
+    const res = item.slice((currentPage - 1) * 10, currentPage * 10);
     setCurrentData(res);
   };
 
@@ -84,8 +85,8 @@ function App() {
               <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.name}</td>
-                <td>naren@gmail.com</td>
-                <td>Software engg</td>
+                <td>{item.email}</td>
+                <td>{item.role}</td>
               </tr>
             );
           })}
