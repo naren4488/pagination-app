@@ -10,19 +10,29 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = async () => {
-    const res = await fetch(
-      `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        return data;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    return res;
+    try {
+      const res = await fetch(
+        `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
+      );
+      const data = res.json();
+      setData(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+      alert("failed to fetch data");
+    }
+    // await fetch(
+    //   `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setData(data);
+    //     // return data;
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     alert('failed to fetch data');
+    //   });
   };
 
   const getCurrentData = (data) => {
@@ -31,15 +41,15 @@ function App() {
   };
 
   useEffect(() => {
-    // (async () => {
-    //   const result = await fetchData();
-    //   setTotalPages(Math.ceil(result.length / 10));
-    //   getCurrentData(result);
-    // })();
-    fetchData();
-    setTotalPages(Math.ceil(data.length / 10));
-    getCurrentData(data);
-  }, [data]);
+    (async () => {
+      const result = await fetchData();
+      setTotalPages(Math.ceil(result.length / 10));
+      getCurrentData(result);
+    })();
+    // fetchData();
+    // setTotalPages(Math.ceil(data.length / 10));
+    // getCurrentData(data);
+  }, []);
 
   useEffect(() => {
     getCurrentData(data);
