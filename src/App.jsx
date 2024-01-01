@@ -10,7 +10,6 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = async () => {
-    
     // try {
     //   const res = await fetch(
     //     `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
@@ -24,20 +23,22 @@ function App() {
     //   window.alert("failed to fetch data");
     // }
 
-    const data = await fetch(
+    await fetch(
       `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
     )
       .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        return data;
+      .then((jsonData) => {
+        setTotalPages(Math.ceil(jsonData.length / 10));
+        setData(jsonData);
+        getCurrentData(jsonData);
+        // return jsonData;
       })
       .catch((err) => {
         console.error(err);
         alert('failed to fetch data');
       });
 
-      return data;
+    // return data;
   };
 
   const getCurrentData = (item) => {
@@ -47,12 +48,12 @@ function App() {
   };
 
   useEffect(() => {
-    (async () => {
-      const result = await fetchData();
-      setTotalPages(Math.ceil(result.length / 10));
-      getCurrentData(result);
-    })();
-    // fetchData();
+    // (async () => {
+    //   const result = await fetchData();
+    //   setTotalPages(Math.ceil(result.length / 10));
+    //   getCurrentData(result);
+    // })();
+    fetchData();
     // setTotalPages(Math.ceil(data.length / 10));
     // getCurrentData(data);
   }, []);
