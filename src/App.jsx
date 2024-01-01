@@ -10,29 +10,34 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = async () => {
-    try {
-      const res = await fetch(
-        `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
-      );
-      const jsonData = await res.json();
-      setData(jsonData);
-      return jsonData;
-    } catch (err) {
-      console.log(err);
-      alert("failed to fetch data");
-    }
-    // await fetch(
-    //   `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setData(data);
-    //     // return data;
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     alert('failed to fetch data');
-    //   });
+    
+    // try {
+    //   const res = await fetch(
+    //     `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
+    //   );
+    //   const jsonData = await res.json();
+    //   setData(jsonData);
+    //   return jsonData;
+    // } catch (err) {
+    //   console.error(err);
+    //   console.log('failed to fetch data')
+    //   window.alert("failed to fetch data");
+    // }
+
+    const data = await fetch(
+      `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        return data;
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('failed to fetch data');
+      });
+
+      return data;
   };
 
   const getCurrentData = (item) => {
