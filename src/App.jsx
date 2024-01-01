@@ -10,16 +10,19 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = async () => {
-    try {
-      const res = await fetch(
-        `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
-      );
-      const data = await res.json();
-      setData(data);
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
+    const res = await fetch(
+      `https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        return data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    return res;
   };
 
   const getCurrentData = (data) => {
@@ -28,12 +31,15 @@ function App() {
   };
 
   useEffect(() => {
-    (async () => {
-      const result = await fetchData();
-      setTotalPages(Math.ceil(result.length / 10));
-      getCurrentData(result);
-    })();
-  }, []);
+    // (async () => {
+    //   const result = await fetchData();
+    //   setTotalPages(Math.ceil(result.length / 10));
+    //   getCurrentData(result);
+    // })();
+    fetchData();
+    setTotalPages(Math.ceil(data.length / 10));
+    getCurrentData(data);
+  }, [data]);
 
   useEffect(() => {
     getCurrentData(data);
